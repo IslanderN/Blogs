@@ -9,7 +9,7 @@ namespace Blogs.Repository
     /// Repository which encapsulate work with database
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    internal interface IGenericRepository<TEntity> where TEntity : class
+    public interface IGenericRepository<TEntity> where TEntity : class
     {
         void Create(TEntity item);
 

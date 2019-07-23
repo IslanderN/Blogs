@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Blogs.Repository
 {
-    internal class Repository<TEntity> : IGenericRepository<TEntity> 
+    public class Repository<TEntity> : IGenericRepository<TEntity> 
         where TEntity : class
     {
         private readonly DbSet<TEntity> dbSet;
