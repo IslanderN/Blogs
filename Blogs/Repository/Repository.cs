@@ -18,6 +18,11 @@ namespace Blogs.Repository
             this.dbSet = this.context.Set<TEntity>();
         }
 
+        public bool Contains(int id)
+        {
+            return GetEntity(id) != null;
+        }
+
         public void Create(TEntity item)
         {
             this.dbSet.Add(item);
@@ -55,6 +60,7 @@ namespace Blogs.Repository
         public void Update(TEntity item)
         {
             this.context.Entry(item).State = EntityState.Modified;
+            this.dbSet.Update(item);
             this.context.SaveChanges();
         }
     }
