@@ -16,6 +16,7 @@ namespace Blogs
 {
     using Repository;
     using Context;
+    using Services;
 
     public class Startup
     {
@@ -47,6 +48,9 @@ namespace Blogs
             });
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(Repository<>));
+
+            // Registrate all services
+            services.AddBlogServices();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
