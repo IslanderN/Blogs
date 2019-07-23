@@ -15,6 +15,7 @@ using Microsoft.Extensions.Options;
 namespace Blogs
 {
     using Repository;
+    using Context;
 
     public class Startup
     {
@@ -29,6 +30,21 @@ namespace Blogs
         public void ConfigureServices(IServiceCollection services)
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
+
+            // Use MsSQL DB
+
+            /// Registrate DbContext.
+            /// Need for Repository.
+            /// DI container inject this implementation to Repository
+            services.AddScoped<DbContext, BlogContext>((serviceProvider) =>
+            {
+                var options = new DbContextOptionsBuilder<BlogContext>()
+                // using lazy loading
+                .UseLazyLoadingProxies()
+                .UseSqlServer(connection)
+                .Options;
+                return new BlogContext(options);
+            });
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(Repository<>));
 
