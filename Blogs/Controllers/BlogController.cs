@@ -37,17 +37,32 @@ namespace Blogs.Controllers
 
         // POST: api/Blog
         [HttpPost]
-        public void Post([FromBody] Blog value)
+        public IActionResult Post([FromBody] Blog value)
         {
+            if(!ModelState.IsValid)
+            {
+                return this.BadRequest("Model is invalid");
+            }
             this.blogService.EditBlog(value);
+
+            return this.Ok();
         }
         
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
-            this.blogService.DeleteBlog(id);
+            
+            var result = this.blogService.DeleteBlog(id);
+            if (result)
+            {
+                return this.Ok();
+            }
+            else
+            {
+                return this.BadRequest("Blog isn't found");
+            }
         }
     }
 }

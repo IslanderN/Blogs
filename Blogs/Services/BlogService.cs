@@ -38,12 +38,14 @@ namespace Blogs.Services
                 this.blogRepository.Update(blog);
             }
         }
-        public void DeleteBlog(int blogId)
+        public bool DeleteBlog(int blogId)
         {
             if (this.blogRepository.Contains(blogId))
             {
                 this.blogRepository.Delete(blogId);
+                return true;
             }
+            return false;
         }
     }
 }
