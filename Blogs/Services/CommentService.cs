@@ -11,10 +11,12 @@ namespace Blogs.Services
     public class CommentService
     {
         private readonly IGenericRepository<Comment> commentRepository;
+        private readonly IGenericRepository<Blog> blogRepository;
 
-        public CommentService(IGenericRepository<Comment> commenRepository)
+        public CommentService(IGenericRepository<Comment> commenRepository, IGenericRepository<Blog> blogRepository)
         {
             this.commentRepository = commenRepository;
+            this.blogRepository = blogRepository;
         }
 
         public List<Comment> GetAllCommentsToBlog(int blogId)
@@ -23,9 +25,14 @@ namespace Blogs.Services
                 .Where(c => c.BlogId == blogId)
                 .ToList();
         }
-        public void AddComment(Comment comment)
+        public bool AddComment(Comment comment)
         {
-            this.commentRepository.Create(comment);
+            if(this.blogRepository.Contains(comment.BlogId))
+            {
+                this.commentRepository.Create(comment);
+                return true;
+            }
+            return false;
         }
         public void EditComment(Comment comment)
         {
@@ -34,12 +41,14 @@ namespace Blogs.Services
                 this.commentRepository.Update(comment);
             }
         }
-        public void DeleteComment(int commentId)
+        public bool DeleteComment(int commentId)
         {
             if (this.commentRepository.Contains(commentId))
             {
                 this.commentRepository.Delete(commentId);
+                return true;
             }
+            return false;
         }
     }
 }

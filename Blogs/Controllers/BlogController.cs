@@ -43,7 +43,7 @@ namespace Blogs.Controllers
             {
                 return this.BadRequest("Model is invalid");
             }
-            this.blogService.EditBlog(value);
+            this.blogService.AddOrUpdate(value);
 
             return this.Ok();
         }
@@ -53,9 +53,8 @@ namespace Blogs.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            
-            var result = this.blogService.DeleteBlog(id);
-            if (result)
+           
+            if (this.blogService.DeleteBlog(id))
             {
                 return this.Ok();
             }
@@ -64,5 +63,6 @@ namespace Blogs.Controllers
                 return this.BadRequest("Blog isn't found");
             }
         }
+
     }
 }

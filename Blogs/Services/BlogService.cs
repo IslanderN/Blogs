@@ -47,5 +47,16 @@ namespace Blogs.Services
             }
             return false;
         }
+        public void AddOrUpdate(Blog blog)
+        {
+            if (this.blogRepository.Contains(blog.BlogId))
+            {
+                this.blogRepository.Update(blog);
+            }
+            else
+            {
+                this.blogRepository.Create(blog);
+            }
+        }
     }
 }
