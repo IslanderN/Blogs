@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace Blogs.Repository
 {
+    using Context;
     public class Repository<TEntity> : IGenericRepository<TEntity> 
         where TEntity : class
     {
         private readonly DbSet<TEntity> dbSet;
         private readonly DbContext context;
 
-        public Repository(DbContext context)
+        public Repository(BlogContext context)
         {
             this.context = context;
             this.dbSet = this.context.Set<TEntity>();

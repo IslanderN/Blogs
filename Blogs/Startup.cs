@@ -30,22 +30,18 @@ namespace Blogs
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            string connection = Configuration.GetConnectionString("DefaultConnection");
+            string connection = Configuration.GetValue<string>("ConnectionString:DefaultConnection");
 
             // Use MsSQL DB
 
-            /// Registrate DbContext.
-            /// Need for Repository.
-            /// DI container inject this implementation to Repository
-            services.AddScoped<DbContext, BlogContext>((serviceProvider) =>
-            {
-                var options = new DbContextOptionsBuilder<BlogContext>()
-                // using lazy loading
+
+
+            services.AddDbContext<BlogContext>(
+                options =>
+                options
                 .UseLazyLoadingProxies()
                 .UseSqlServer(connection)
-                .Options;
-                return new BlogContext(options);
-            });
+                );
 
             services.AddScoped(typeof(IGenericRepository<>), typeof(Repository<>));
 

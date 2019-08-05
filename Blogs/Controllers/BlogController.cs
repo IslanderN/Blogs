@@ -9,9 +9,11 @@ namespace Blogs.Controllers
 {
     using Services;
     using Models;
+    using Fiters;
 
     [Route("api/[controller]")]
     [ApiController]
+    [TypeFilter(typeof(AuthorizationFilter))]
     public class BlogController : ControllerBase
     {
         private readonly BlogService blogService;
