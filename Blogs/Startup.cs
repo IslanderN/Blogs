@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -13,6 +14,10 @@ using Microsoft.Extensions.Options;
 
 namespace Blogs
 {
+    using Repository;
+    using Context;
+    using Services;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -25,6 +30,24 @@ namespace Blogs
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            string connection = Configuration.GetValue<string>("ConnectionString:DefaultConnection");
+
+            // Use MsSQL DB
+
+
+
+            services.AddDbContext<BlogContext>(
+                options =>
+                options
+                .UseLazyLoadingProxies()
+                .UseSqlServer(connection)
+                );
+
+            services.AddScoped(typeof(IGenericRepository<>), typeof(Repository<>));
+
+            // Registrate all services
+            services.AddBlogServices();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
